@@ -2,11 +2,11 @@
 namespace GesagtGetan\KrakenOptimizer\Service;
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Log\SystemLoggerInterface;
 use GuzzleHttp\Client;
 use Neos\Utility;
 use Neos\Flow\Utility\Environment;
 use Neos\Flow\Exception;
+use Psr\Log\LoggerInterface;
 
 /**
  * @Flow\Scope("singleton")
@@ -15,7 +15,7 @@ class ResourceService implements ResourceServiceInterface
 {
     /**
      * @Flow\Inject
-     * @var SystemLoggerInterface
+     * @var LoggerInterface
      */
     protected $systemLogger;
 

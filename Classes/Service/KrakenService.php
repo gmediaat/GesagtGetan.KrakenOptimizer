@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Mvc\ActionRequest;
+use Psr\Log\LoggerInterface;
 
 /**
  * @Flow\Scope("singleton")
@@ -41,6 +42,12 @@ class KrakenService implements KrakenServiceInterface
      * @var UriBuilder
      */
     protected $uriBuilder;
+
+    /**
+     * @Flow\Inject
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * default cost for creating hashed verifcation token
@@ -79,6 +86,9 @@ class KrakenService implements KrakenServiceInterface
 
         $krakenOptions = array_merge($krakenOptions, $this->krakenOptions);
 
+        // TODO: remove after testing
+        $this->logger->debug('File stream', [Psr7\stream_for($thumbnail->getStream())]);
+
         return $this->guzzleHttpClient->request(
             'POST',
             '',
@@ -112,6 +122,9 @@ class KrakenService implements KrakenServiceInterface
         if (!isset($this->krakenOptions['auth']['api_key']) || !isset($this->krakenOptions['auth']['api_secret'])) {
             throw new \Neos\Flow\Exception('Kraken requires ``api_key`` and ``api_secret`` to be definied in settings ', 1524401129);
         }
+
+        // TODO: remove after testing
+        $this->logger->debug('Thumbnail filename and Sha1', [$thumbnail->getFilename(), $thumbnail->getSha1()]);
 
         $krakenOptions = [
             'callback_url' => $this->generateUri(
